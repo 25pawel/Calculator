@@ -1,6 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+
 public class App implements ActionListener {
 
     JFrame frame;
@@ -139,16 +143,16 @@ public class App implements ActionListener {
             number_2 = Double.parseDouble(textFieldDown.getText());
             switch(operator){
                 case '+':
-                    result = number_1 + number_2;
+                    result = round(number_1 + number_2,5);
                     break;
                 case '-':
-                    result = number_1 - number_2;
+                    result = round(number_1 - number_2, 5);
                     break;
                 case '*':
-                    result = number_1 * number_2;
+                    result = round(number_1 * number_2, 5);
                     break;
                 case '/':
-                    result = number_1 / number_2;
+                    result = round(number_1 / number_2, 5);
                     break;
             }
             String stringForUpTextField = String.valueOf(number_1) + operator + String.valueOf(number_2) + "=" +
@@ -172,5 +176,13 @@ public class App implements ActionListener {
             temp *= -1;
             textFieldDown.setText(String.valueOf(temp));
         }
+    }
+
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
